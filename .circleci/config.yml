@@ -1,0 +1,30 @@
+version: 2.1
+
+commands:
+  say-hello:
+    parameters:
+      to:
+        default: ${CIRCLECI_USERNAME}
+        type: string
+    steps:
+      - run: echo "Hello << parameters.to >>"
+
+executors:
+  default:
+    parameters:
+      tag:
+        default: latest
+        type: string
+    docker:
+      - image: bash:<< parameters.tag >>
+
+jobs:
+  hello-build:
+    executor: default
+    steps:
+      - say-hello
+
+workflows:
+  workflow:
+    jobs:
+      - hello-build
